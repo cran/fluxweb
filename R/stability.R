@@ -181,7 +181,7 @@ create.jacob = function(val.mat, biomasses, efficiencies, metabolic.types, ef.le
     diag(jacob) = (diag(val.mat) / biomasses) * (efficiencies - 1)
   }
   if (ef.level == "prey"){
-    jacob = sweep(t(jacob), MARGIN = 2, efficiencies, '*') - val.mat # ej * Fji - Fij 
+    jacob = sweep(t(val.mat), MARGIN = 2, efficiencies, '*') - val.mat # ej * Fji - Fij 
     jacob = sweep(jacob, MARGIN = 2, biomasses, '/')
     diag(jacob) = (diag(val.mat) / biomasses) * (efficiencies - 1)
   }
@@ -191,7 +191,7 @@ create.jacob = function(val.mat, biomasses, efficiencies, metabolic.types, ef.le
     diag(jacob) = (diag(val.mat) / biomasses) * (diag(efficiencies) - 1)
   }
   diag(jacob)[plants] = 0
-  diag(jacob)[detritus] = colSums(val.mat[detritus,]) / biomasses[detritus]
+  diag(jacob)[detritus] = rowSums(val.mat[detritus,, drop = FALSE]) / biomasses[detritus]
   
   return(jacob)
 }
